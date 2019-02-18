@@ -24,12 +24,13 @@ pe "kubectl apply -f frontend.yaml"
 
 # Mongo
 pe "kubectl apply -f mongodb.yaml"
+pe "kubectl get pvc"
 
 # Data API
 pe "kubectl apply -f data-api.yaml"
-pe "kubectl get all -l scenario=1b"
+pe "kubectl get all -l scenario=1c"
 
 pe "../common/get-url.sh $1"
 
 # Show Logs
-#pe "kubectl logs deploy/data-api -f"
+pe "kubectl logs deploy/data-api -f"

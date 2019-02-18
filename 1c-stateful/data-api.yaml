@@ -10,7 +10,7 @@ metadata:
   name: data-api
   labels:
     app: data-api
-    scenario: 1b
+    scenario: 1c
 spec:
   replicas: 3
   selector:
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: data-api
-        scenario: 1b
+        scenario: 1c
     spec:
       containers:
       - name: data-api-pods
@@ -73,7 +73,7 @@ metadata:
   name: data-api-svc
   labels:
     app: data-api
-    scenario: 1b
+    scenario: 1c
 spec:
   type: ClusterIP
   ports:

@@ -1,5 +1,6 @@
 #
-# This is the plain HTTP version of the Smilr ingress
+# This is the HTTPS version of the Smilr ingress
+# Use if you've set up cert-manager and have a valid cert issued
 #
 # !IMPORTANT! Change the domain names in the host/hosts sections to match your real 
 # DNS zone, as created when you deployed AKS with the HTTP application routing add-on
@@ -9,11 +10,16 @@ kind: Ingress
 metadata:
   name: smilr-ingress
   labels:
-    scenario: 1b
+    scenario: 1c
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
 spec:
+  tls:
+  - hosts:
+    - smilr.56539f01234e4e00981e.westeurope.aksapp.io
+    secretName: smilr-cert-staging
   rules:
   - host: smilr.56539f01234e4e00981e.westeurope.aksapp.io
     http:

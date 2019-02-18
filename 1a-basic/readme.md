@@ -1,4 +1,4 @@
-# 1a. Smilr - Basics
+# 1a. Microservices - Basics
 
 This scenario is designed to show the basics to audiences new to Kubernetes. It's worth stressing **this is not an optimal way to deploy such an app**, but it introduces basics to be built upon in scenarios 1b and 1c.
 
@@ -21,11 +21,10 @@ As the app has a SPA frontend it requires that the frontend service is deployed 
 
 For this demo a static IP for the data-api is used. This simplifies things and stops needing either edit the YAML for each deployment or wait for external DNS propagation. 
 
-1. Create static public IP with DNS name.  
-Copy `vars.sample.sh` to `vars.sh` and edit & save. Then run
+1. Create static public IP with DNS name. Pick a unique prefix and pass to script
 
     ```
-    ./create-ip.sh
+    ./create-ip.sh myUniquePrefix
     ```
     This will display the FQDN and the IP address when complete. 
 
@@ -34,7 +33,14 @@ Copy `vars.sample.sh` to `vars.sh` and edit & save. Then run
 3. Edit **frontend.yaml** and change the `API_ENDPOINT` to point to the FQDN just created. This is a URL so do not forget to include `http://` and trailing `/api`
 
 # Running The Scenario
-1. Deploy the data layer
+A. Use the the end to end magic demo script
+```
+./demo.sh
+```
+
+B. Manually run commands
+
+1. Deploy everything with kubectl
     ```
     kubectl apply -f mongodb.yaml
     kubectl apply -f data-api.yaml
@@ -45,4 +51,8 @@ Copy `vars.sample.sh` to `vars.sh` and edit & save. Then run
 
 2. The frontend-svc external IP address is where you can access the Smilr app, e.g. by visiting **http://{frontend-svc-ip}/** in your browser
 
-# Tips & Advice
+
+# Clean Up
+```
+../common/remove.sh
+```

@@ -21,9 +21,9 @@ See [0. Deploy AKS Cluster](./0-cluster-deploy/)
 # Contents
 
 - [0. Deploy AKS Cluster](./0-cluster-deploy/)
-- [1a. Smilr - Basics](./1a-basic/)
-- [1b. Smilr - Ingress & DNS](./1b-ingress)
-- [1c. Smilr - Stateful Workloads]
+- [1a. Microservices: Basics](./1a-basic/)
+- [1b. Microservices: Ingress & DNS](./1b-ingress)
+- [1c. Microservices: Stateful Workloads](./1c-stateful)
 - [2. Using Helm]
 - [3. Monitoring]
 - [4. Namespaces]

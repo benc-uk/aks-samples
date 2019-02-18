@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-publicIp=$(kubectl get svc addon-http-application-routing-nginx-ingress -n kube-system -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+publicIp=$(kubectl get svc addon-http-application-routing-nginx-ingress -n kube-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 dnsIp=$(dig +short $1)
 
 echo "...Kubernetes ingress public IP is $publicIp"

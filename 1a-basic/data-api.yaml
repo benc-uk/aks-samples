@@ -54,7 +54,7 @@ metadata:
 spec:
   type: LoadBalancer
   # !!! Change this !!!
-  loadBalancerIP: 23.97.195.50
+  loadBalancerIP: 52.174.108.181
   ports:
   - protocol: TCP
     port: 80

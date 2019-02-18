@@ -1,4 +1,4 @@
-# 1b. Smilr - Ingress, DNS and HTTPS
+# 1b. Microservices - Ingress, DNS and HTTPS
 
 This scenario builds on 1a and is intended to show a more typical real world way of deploying to Kubernetes.
 
@@ -6,23 +6,22 @@ Concepts covered:
 - Ingress
 - External DNS
 - Liveness Probes
-- StatefulSets & Persistent Volumes
 
 Optional:
 - TLS certs for HTTPS (via Let's Encrypt)
 
-This stands up a demo microservices and SPA app called Smilr with three simple services in your cluster using Deployments, StatefulSets and Ingress for external access
+This stands up a demo microservices and SPA app called Smilr with three simple services in your cluster using Deployments and uses an Ingress for external access
 
 ![app diagram](https://smilr.benco.io/etc/kube-scenario-b.png)
 
-See the [main Smilr project](https://smilr.benco.io) and the [Smilr deployment docs](https://smilr.benco.io/kubernetes/#option-2---direct-deployment) for more details on what the app does and how it functions.
+See the [main Smilr project](https://smilr.benco.io) and the [Smilr deployment docs](https://smilr.benco.io/kubernetes/#scenario-b---advanced) for more details on what the app does and how it functions.
 
 ---
 
 # Prerequsites / Behind the scenes
 This scenario assumes you are using the *'HTTP application routing add-on'* enabled in your AKS cluster. This comes with a free public DNS Zone in Azure with an auto generated named ending in **.aksapp.io**
 
-If you have your own Ingress controller installed with either static DNS records or the [ExternalDNS](https://github.com/kubernetes-incubator/external-dns) extension setup, then they can be used instead, see section [Advanced](#advanced) below
+If you have your own Ingress controller installed with either static DNS records or the [ExternalDNS](https://github.com/kubernetes-incubator/external-dns) extension setup, then they can be used instead, see section below
 
 The *'HTTP application routing add-on'* will dynamically add and remove public DNS records for you based on the hosts you specify in your ingress rules, however it is too slow for most demos. It can be around 5 mins before the record is created and further time for the record to propagate through DNS, accessing the app URL before DNS is setup can result in cached results and further delay (10~15 mins)  
 
@@ -35,10 +34,16 @@ Therefor it is strongly advised to setup the DNS record for the name you are goi
     ./create-dns.sh
     ```
 
-3. Edit **ingress-http.yaml** and change `host:` to match your `appDnsName` with your AKS DNS zone name appended. The `create-dns.sh` script will output the host value you should use
+3. Edit **ingress-http.yaml** and change `host` to match your `appDnsName` with your AKS DNS zone name appended. The `create-dns.sh` script will output the host value you should use
 
 
 # Running The Scenario
+A. Use the the end to end magic demo script, pass `http` as the input to the script
+```
+./demo.sh http
+```
+
+B. Manually run commands
 
 1. Deploy everything
     ```
@@ -48,15 +53,31 @@ Therefor it is strongly advised to setup the DNS record for the name you are goi
     kubectl apply -f ingress-http.yaml
     ```
 
-2. Wait for the *PersistentVolume* to provision and mount to the MongoDb pod. This will take additional time the first time it is run, after the 1st time it will be faster as the volume will be reused. Check the status with
+2. Access the DNS name you put into the `host:` of **ingress-http.yaml** in the browser, or run `./get-url.sh http`
 
+
+# Clean Up
+```
+../common/remove.sh
+```
+
+
+# Advanced: Manual DNS and Ingress
+If not using the *'HTTP application routing add-on'* and have your own DNS domain/zone plus have manually installed an ingress controller (e.g. NGINX), the steps are broadly the same.
+- Create an A record pointing to the public IP of your ingress controller's service (exercise left to reader).  
+- Edit **ingress-http.yaml** and change `host` to match your FQDN
+- Edit **ingress-http.yaml** and change `kubernetes.io/ingress.class` to match the ingress you are using, e.g. `nginx` if using NGINX 
+
+
+# Advanced: HTTPS and TLS Certs
+To use HTTPS, TLS certs need to be issued and used. Let's Encrypt can provide free certs and [cert-manager](https://github.com/jetstack/cert-manager) is a standard way to integrate Let's Encrypt with Kubernetes and automatically issue certs
+
+1. Install cert-manager. [Follow these steps](https://docs.cert-manager.io/en/latest/getting-started/install.html)
+2. Change the email address in the **issuer.yaml** file, you can use any valid email address
+3. Install the cert issuer. Note. We use the staging Let's Encrypt endpoint as the production endpoint has ***extremely*** strict rate limits and the aksapp.io domain is often blocked
     ```
-    kubectl describe pod -l app=mongodb,scenario=1b
+    kubectl apply -f issuer.yaml
     ```
-3. If using the *'HTTP application routing add-on'* and you haven't set a static DNS A record up, then a dynamic one will be added, but it will take several minutes
-
-3. Access the DNS name you put into the `host:` of **ingress-http.yaml** in the browser
-
-# Advanced
-
-2. If using static DNS and your own ingress controller, create an A record pointing to the external IP of the ingress controller
+5. The certificate might take a little while to validate and be issued the first time
+6. Run the scenarios but pass `https` to the `demo.sh` script (e.g. `./demo.sh https`) or apply  `ingress-https.yaml` if deploying manually with kubectl
+7. Note. You might get a warning about the cert in the browser as it's issued by the staging service, you may have to ignore the error (e.g. click on 'advanced' or 'proceed to site'). One option to avoid the error is to install the 'Fake LE Intermediate X1' cert in your trusted root certs but this is not recommended 

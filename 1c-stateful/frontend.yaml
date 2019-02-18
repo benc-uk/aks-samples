@@ -10,7 +10,7 @@ metadata:
   name: frontend
   labels:
     app: frontend
-    scenario: 1b
+    scenario: 1c
 spec:
   replicas: 2
   selector:
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: frontend
-        scenario: 1b
+        scenario: 1c
     spec:
       containers:
       - name: frontend-pods
@@ -60,7 +60,7 @@ metadata:
   name: frontend-svc
   labels:
     app: frontend
-    scenario: 1b
+    scenario: 1c
 spec:
   type: ClusterIP
   ports:

@@ -3,10 +3,10 @@ set -e
 
 # Load external input variables
 source ../common/vars.sh
-source vars.sh
 
 # Local vars
 ipName="smilr-api-staticip"
+dnsPrefix=$1
 
 nodeResGrp=$(az aks show --resource-group $resGrp --name $aksName --query nodeResourceGroup -o tsv)
 echo "...Will use resource group: $nodeResGrp"

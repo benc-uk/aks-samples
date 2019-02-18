@@ -9,7 +9,7 @@ kind: Ingress
 metadata:
   name: smilr-ingress
   labels:
-    scenario: 1b
+    scenario: 1c
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
