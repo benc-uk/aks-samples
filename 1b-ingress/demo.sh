@@ -21,21 +21,16 @@ pe "kubectl describe ingress/smilr-ingress"
 
 # Deploy frontend
 pe "kubectl apply -f frontend.yaml"
-pe "kubectl get all -l app=frontend"
+#pe "kubectl get all -l app=frontend"
 
 # Mongo
 pe "kubectl apply -f mongodb.yaml"
 
 # Data API
 pe "kubectl apply -f data-api.yaml"
-pe "kubectl get all -l app=data-api"
+pe "kubectl get all -l scenario=1b"
+
+pe "./get-url.sh $1"
 
 # Show Logs
-pe "kubectl logs deploy/data-api"
-
-pe "kubectl get ingress/smilr-ingress -o json | jq -r \".spec.rules[0].host\""
-#fqdn=$(kubectl get ingress/smilr-ingress -o json | jq -r ".spec.rules[0].host")
-
-# printf "\n### Checking DNS\n"
-# nslookup $fqdn
-# printf "\nApp should be available at $ingressType://$fqdn \n\n"
+pe "kubectl logs deploy/data-api -f"

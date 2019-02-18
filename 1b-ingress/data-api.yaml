@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: data-api
-        scenario: 1a
+        scenario: 1b
     spec:
       containers:
       - name: data-api-pods
@@ -53,7 +53,7 @@ spec:
       # Wipe & initialize the database with demo data, remove if unwanted
       # initContainers:
       #  - name: init-demodata
-      #    image: bcdemo.azurecr.io/smilr/data-api
+      #    image: smilr/data-api
       #    command: ['sh', '-c', 'cd demoData && node demoData.js']
       #    env:
       #      - name: MONGO_CONNSTR

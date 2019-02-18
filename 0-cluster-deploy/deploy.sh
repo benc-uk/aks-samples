@@ -1,10 +1,8 @@
 #!/bin/bash
 set -e
 
-# Load variables
-. vars.sh
-
-# ==========================================================
+# Load external input variables
+source vars.sh
 
 echo "...Creating resource group..."
 az group create -n $resGrp -l $location -o table

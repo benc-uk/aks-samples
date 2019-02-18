@@ -1,8 +1,12 @@
+#
+# RENAME ME! to vars.sh
+#
+
 # Change these
-resGrp="temp.aks2"
-location="westeurope"
-clusterName="akstemp"
-logWorkspaceName="aks-logstemp" # MUST BE UNIQUE!
+resGrp=""
+location=""
+clusterName=""
+logWorkspaceName="" # MUST BE UNIQUE!
 
 # Maybe change these
 vmSize="Standard_D2s_v3"

@@ -1,8 +1,9 @@
 #
 # Deploy the front end microservice which serves the client app
+# Basic version
 #
-# !IMPORTANT! Change the image reference to point to the registry holding
-# the Smilr images, either ACR or public
+
+# ------------------- Deployment ------------------- #
 
 kind: Deployment
 apiVersion: apps/v1
@@ -10,9 +11,9 @@ metadata:
   name: frontend
   labels:
     app: frontend
-    scenario: 1b
+    scenario: 1a
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -20,13 +21,12 @@ spec:
     metadata:
       labels:
         app: frontend
-        scenario: 1b
+        scenario: 1a
     spec:
       containers:
       - name: frontend-pods
 
-        # !CHANGE THIS! To your real image reference for the frontend 
-        image: bcdemo.azurecr.io/smilr/frontend:stable
+        image: smilr/frontend:stable
         imagePullPolicy: Always
 
         ports:
@@ -34,35 +34,26 @@ spec:
 
         env:       
         - name: API_ENDPOINT
-          value: /api 
-
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 3
-          periodSeconds: 20
+          # !!! CHANGE THIS !!! Use the DNS name of your static IP
+          value: http://smilrstatic.westeurope.cloudapp.azure.com/api
 
         resources:
           limits:
             memory: "64M"
-            cpu: "0.1"
+            cpu: "0.125"
 
 ---
 
-#
-# Endpoint for the front end microservice which serves the client app
-#
+# ------------------- Loadbalancer ------------------- #
 
 kind: Service
 apiVersion: v1
 metadata:
   name: frontend-svc
   labels:
-    app: frontend
-    scenario: 1b
+    scenario: 1a
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 80
