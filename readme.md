@@ -24,8 +24,8 @@ See [0. Deploy AKS Cluster](./0-cluster-deploy/)
 - [1a. Microservices: Basics](./1a-basic/)
 - [1b. Microservices: Ingress & DNS](./1b-ingress)
 - [1c. Microservices: Stateful Workloads](./1c-stateful)
-- [2. Using Helm]
-- [3. Monitoring]
+- [2. Using Helm](./2-helm)
+- [3. Monitoring](./3-monitoring)
 - [4. Namespaces]
 - [5. Pod Autoscaler (HPA)]
 - [6. Cluster Autoscaler (CA)]
