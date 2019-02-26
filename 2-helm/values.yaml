@@ -1,0 +1,21 @@
+registryPrefix: bcdemo.azurecr.io/
+domainSuffix: smilr.56539f01234e4e00981e.westeurope.aksapp.io
+cmCertIssuer: 
+
+dataApi:
+  imageTag: stable
+  replicas: 3
+  # Leave blank to use the internal service, override if using external database
+  mongoConnStr: 
+  imagePullPolicy: Always
+
+frontend:
+  imageTag: stable
+  replicas: 3
+  imagePullPolicy: Always
+
+mongodb:
+  persistence:
+    enabled: false
+  replicaSet:
+    enabled: false
