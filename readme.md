@@ -25,9 +25,8 @@ See [0. Deploy AKS Cluster](./0-cluster-deploy/)
 - [1b. Microservices: Ingress & DNS](./1b-ingress)
 - [1c. Microservices: Stateful Workloads](./1c-stateful)
 - [2. Using Helm](./2-helm)
-- [3. Monitoring](./3-monitoring)
-- [4. Namespaces]
-- [5. Pod Autoscaler (HPA)]
-- [6. Cluster Autoscaler (CA)]
-- [7a. Virtual Nodes - Basics]
-- [7b. Virtual Nodes - Bursting at Scale]
+- [3. Monitoring (Prometheus)](./3-monitoring)
+- [4. Pod Autoscaler (HPA)]
+- [5. Cluster Autoscaler (CA)]
+- [6. Virtual Nodes](./6-virtual-nodes)
+- [7. Machine Learning and KubeFlow](./7-monitoring)
