@@ -13,15 +13,17 @@ metadata:
     scenario: 1b
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     certmanager.k8s.io/cluster-issuer: letsencrypt-staging
 spec:
   tls:
   - hosts:
-    - smilr.56539f01234e4e00981e.westeurope.aksapp.io
+    # Change FQDN host as required to match your config
+    - smilr.kube.benc.dev
     secretName: smilr-cert-staging
   rules:
-  - host: smilr.56539f01234e4e00981e.westeurope.aksapp.io
+  # Change FQDN host as required to match your config
+  - host: smilr.kube.benc.dev
     http:
       paths:
       - path: /api

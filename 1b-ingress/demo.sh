@@ -28,6 +28,7 @@ pe "kubectl apply -f mongodb.yaml"
 # Data API
 pe "kubectl apply -f data-api.yaml"
 pe "kubectl get all -l scenario=1b"
+pe "kubectl get ingress"
 
 pe "../common/get-url.sh $1"
 
