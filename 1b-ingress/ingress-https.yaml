@@ -19,11 +19,11 @@ spec:
   tls:
   - hosts:
     # Change FQDN host as required to match your config
-    - smilr.kube.benc.dev
+    - smilr.56539f01234e4e00981e.westeurope.aksapp.io
     secretName: smilr-cert-staging
   rules:
   # Change FQDN host as required to match your config
-  - host: smilr.kube.benc.dev
+  - host: smilr.56539f01234e4e00981e.westeurope.aksapp.io
     http:
       paths:
       - path: /api
