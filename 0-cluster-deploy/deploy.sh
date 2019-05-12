@@ -4,23 +4,46 @@ set -e
 # Load external input variables
 source vars.sh
 
-echo "...Creating resource group..."
+#
+# Resource group
+#
+echo -e "### Creating resource group..."
 az group create -n $resGrp -l $location -o table
 
-echo "...Creating main AKS VNet and subnet..."
-az network vnet create -g $resGrp -n $vnetName \
- --address-prefix "10.55.0.0/16" \
- --subnet-name $subnetName --subnet-prefix "10.55.1.0/24" -o table
+#
+# Service principal
+#
+echo -e "\n### Creating service principal..."
+spPassword=$(az ad sp create-for-rbac --skip-assignment -n "$clusterName-sp" --query password -o tsv)
 
-echo "...Creating subnet for Virtual Nodes..."
+echo -e "\n### Waiting 60 seconds for SP to fully propogate..."
+sleep 60
+spClientId=$(az ad sp list --spn "http://$clusterName-sp" --query "[0].appId" -o tsv)
+echo -e "\n### New service principal id: $spClientId"
+
+#
+# VNet and subnets
+#
+echo -e "\n### Creating main AKS VNet and subnet..."
+az network vnet create -g $resGrp --name $vnetName \
+ --address-prefix "10.0.0.0/8" \
+ --subnet-name $subnetName --subnet-prefix "10.240.0.0/16" -o table
+
+echo -e "\n### Assigning role to VNet..."
+vnetId=$(az network vnet show -g $resGrp --name $vnetName --query id -o tsv)
+az role assignment create --assignee $spClientId --scope $vnetId --role Contributor -o table
+
+echo -e "\n### Creating subnet for Virtual Nodes..."
 az network vnet subnet create -g $resGrp --vnet-name $vnetName \
  --name $vnodesSubnetName \
- --address-prefixes "10.55.2.0/24" -o table
+ --address-prefixes "10.241.0.0/16" -o table
 
-subnetId=$(az network vnet subnet show -n $subnetName \
- -g $resGrp --vnet-name $vnetName --query "id" -o tsv)
+subnetId=$(az network vnet subnet show -n $subnetName -g $resGrp --vnet-name $vnetName --query "id" -o tsv)
 
-echo "...Creating Log Analytics workspace..."
+#
+# Monitoring
+#
+echo -e "\n### Creating Log Analytics workspace..."
 az resource create --resource-type Microsoft.OperationalInsights/workspaces \
  -n $logWorkspaceName \
  -g $resGrp \
@@ -28,17 +51,16 @@ az resource create --resource-type Microsoft.OperationalInsights/workspaces \
  -p '{}' -o table
 
 workspaceId=$(az resource show -n $logWorkspaceName -g $resGrp --resource-type Microsoft.OperationalInsights/workspaces --query "id" -o tsv)
-echo $workspaceId
 
 #
-# Cluster features/options 
+# Build the cluster! With features/options: 
 # - Advanced network, autoscaler, VMSS, monitoring, RBAC, HTTP routing
 #
-echo "...Creating AKS cluster..."
+echo -e "\n### Creating AKS cluster, please wait..."
 az aks create \
  --resource-group $resGrp \
  --name $clusterName \
- --location westeurope \
+ --location $location \
  --dns-name-prefix $clusterName \
  --kubernetes-version $kubeVersion \
  --node-vm-size $vmSize \
@@ -51,26 +73,28 @@ az aks create \
  --network-plugin azure \
  --vnet-subnet-id $subnetId \
  --workspace-resource-id $workspaceId \
+ --service-principal $spClientId \
+ --client-secret $spPassword \
  --windows-admin-username $winAdminUser \
  --windows-admin-password $winAdminPwd \
  --verbose
 
-echo "..."
-echo "...Cluster is ready, running post deploy steps..."
-echo "..."
+echo -e "\n### "
+echo -e "### AKS cluster is now ready, running post deploy steps..."
+echo -e "### "
 
 #
 # Post creation things
 #
 
-# echo "...Enabling Virtual Nodes..."
+# echo -e "\n### Enabling Virtual Nodes..."
 # az aks enable-addons \
 #   --resource-group $resGrp \
 #   --name $clusterName \
 #   --addons virtual-node \
 #   --subnet-name $vnodesSubnetName
 
-echo "...Adding Windows node pool, this will take some time..."
+echo -e "\n### Adding Windows node pool, this will take some time..."
 az aks nodepool add \
   --resource-group $resGrp \
   --cluster-name $clusterName \

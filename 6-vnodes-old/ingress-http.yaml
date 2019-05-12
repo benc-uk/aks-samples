@@ -1,0 +1,25 @@
+#
+# This is the plain HTTP version of the Smilr ingress
+#
+# !IMPORTANT! Change the domain names in the host/hosts sections to match your real 
+# DNS zone, as created when you deployed AKS with the HTTP application routing add-on
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nodeapp-ingress
+  labels:
+    scenario: "6"
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    # Change FQDN host as required to match your config
+  - host: nodedemo.0c5a7425cd6b4d5fb3ab.westeurope.aksapp.io.westeurope.aksapp.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nodeapp
+          servicePort: 80
