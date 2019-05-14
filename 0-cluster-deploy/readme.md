@@ -27,10 +27,23 @@ You must copy the provided `vars.sample.sh` file to `vars.sh` and edit the setti
     az extension add --name aks-preview
     ```
 
-- [Enable multiple node pools](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#before-you-begin)
+- Enable preview features
 
-- [Enable Windows nodes]  
-((Instructions redacted while still in private preview))
+    ```
+    az feature register --name MultiAgentpoolPreview --namespace Microsoft.ContainerService
+    az feature register --name VMSSPreview --namespace Microsoft.ContainerService
+    az feature register --name WindowsPreview --namespace Microsoft.ContainerService
+    ```
+
+    Check the status of the registrations with the following
+    ```
+    az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService')].{Name:name,State:properties.state}"
+    ```
+
+    It can sometimes take over 20 minutes for the features to register. Once registered, it is important that you re-register the **Microsoft.ContainerService** provider
+    ```
+    az provider register --namespace Microsoft.ContainerService
+    ```
 
 ## Running
 Run the script
