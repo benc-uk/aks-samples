@@ -1,0 +1,104 @@
+# Default values for online-store.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+lf:
+  image:
+    repository: mcr.microsoft.com/virtualnode/samples/live-metrics-forwarder
+    tag: latest
+    pullPolicy: Always
+  service:
+      type: ClusterIP
+      port: 55678
+  resources:
+    requests:
+      cpu: 500m
+      memory: 0.1G
+
+app:
+  throttle:
+    sleep: 1
+    limit: 100
+
+  replicaCount: 1
+  image:
+    repository: mcr.microsoft.com/virtualnode/samples/online-store
+    tag: latest
+    pullPolicy: Always
+  
+  service:
+    type: ClusterIP
+    port: 80
+  
+  ingress:
+    enabled: true
+    # Used to create an Ingress record.
+    # When use IP access, comment hosts node
+    host: store.k.benco.io
+    annotations:
+      kubernetes.io/ingress.class: addon-http-application-routing
+      #kubernetes.io/tls-acme: "true"
+      #nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    #tls:
+      # Secrets must be manually created in the namespace.
+      #- secretName: mi-rbitia-com
+      #  hosts:
+      #    - mi.rbitia.com
+  resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+   #limits:
+   # cpu: 100m
+   # memory: 0.1G
+    requests:
+      cpu: 100m
+      memory: 0.1G
+
+  nodeSelector: 
+    kubernetes.io/role: agent
+    beta.kubernetes.io/os: linux
+    type: virtual-kubelet
+
+  tolerations: 
+  - key: virtual-kubelet.io/provider
+    operator: Exists
+  - key: azure.com/aci
+    effect: NoSchedule
+
+  affinity: {}
+    # nodeAffinity:
+    #   preferredDuringSchedulingIgnoredDuringExecution:
+    #   - weight: 1
+    #     preference:
+    #       matchExpressions:
+    #       - key: type
+    #         operator: NotIn
+    #         values:
+    #         - virtual-kubelet    
+
+promMonitor: online-store
+
+counter:
+  replicaCount: 1
+  # The interval in seconds
+  interval: 5
+  # The watcher will report pods on this node separately
+  specialNodeName: virtual-node-aci-linux
+  image:
+    repository: mcr.microsoft.com/virtualnode/samples/container-counter
+    tag: latest 
+    pullPolicy: Always 
+
+hpa:
+  metricTarget: 10
+  minReplicas: 1
+  maxReplicas: 60
+
+appInsight:
+  ## flag to enable App Insight Integration
+  enabled: false
+  ## Required if enabled; this is the instrumentation key that will be used
+  ## for communication with Application Insights. Must be provided
+  key:
