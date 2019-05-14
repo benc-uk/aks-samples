@@ -60,14 +60,23 @@ app:
     kubernetes.io/role: agent
     beta.kubernetes.io/os: linux
     type: virtual-kubelet
+
   tolerations: 
   - key: virtual-kubelet.io/provider
     operator: Exists
   - key: azure.com/aci
     effect: NoSchedule
 
-
   affinity: {}
+    # nodeAffinity:
+    #   preferredDuringSchedulingIgnoredDuringExecution:
+    #   - weight: 1
+    #     preference:
+    #       matchExpressions:
+    #       - key: type
+    #         operator: NotIn
+    #         values:
+    #         - virtual-kubelet    
 
 promMonitor: online-store
 
@@ -84,7 +93,7 @@ counter:
 
 hpa:
   metricTarget: 10
-  minReplicas: 2 
+  minReplicas: 1
   maxReplicas: 60
 
 appInsight:
