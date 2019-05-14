@@ -12,7 +12,6 @@ helm install stable/grafana --name grafana -f grafana/values.yaml
 helm install ../6-virtual-nodes/charts/online-store --name online-store -f ./myvalues.yaml
 ```
 
-
 # Access Grafana
 ```
 kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
