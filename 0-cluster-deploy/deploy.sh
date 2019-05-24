@@ -100,6 +100,6 @@ az aks nodepool add \
   --cluster-name $clusterName \
   --os-type Windows \
   --name win1 \
-  --node-count $minNodes \
+  --node-count 1 \
   --node-vm-size $vmSize \
   --kubernetes-version $kubeVersion \
