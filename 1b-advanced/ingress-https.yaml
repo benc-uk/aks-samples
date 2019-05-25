@@ -19,11 +19,11 @@ spec:
   tls:
   - hosts:
     # Change FQDN host as required to match your config
-    - changeme.changeme.net
+    - smilr.k.benco.io
     secretName: smilr-cert-staging
   rules:
   # Change FQDN host as required to match your config
-  - host: changeme.changeme.net
+  - host: smilr.k.benco.io
     http:
       paths:
       - path: /api
