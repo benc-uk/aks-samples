@@ -21,7 +21,7 @@ helm install --name prometheus stable/prometheus --namespace monitoring --set se
 
 Install Grafana using Helm
 ```
-helm install --name grafana stable/grafana --namespace monitoring --set persistence.enabled=true,image.tag=6.1.4,persistence.size=1Gi
+helm install --name grafana stable/grafana --namespace monitoring --set persistence.enabled=true,image.tag=6.2.0,persistence.size=1Gi
 ```
 
 Once deployed get the default password for the `admin` user account
