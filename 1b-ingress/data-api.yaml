@@ -47,8 +47,14 @@ spec:
 
         resources:
           limits:
-            memory: "256M"
-            cpu: "0.1"
+            memory: "2G"
+            cpu: "0.25"
+          requests:
+            memory: "2G"
+            cpu: "0.25"
+        
+      nodeSelector:
+        agentpool: nodepool1
             
       # Wipe & initialize the database with demo data, remove if unwanted
       # initContainers:

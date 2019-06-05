@@ -1,21 +1,28 @@
-# Setup Summary
+# Setup summary
+This installs everything into a namespace called **vnodes**
 ```
-kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/master/bundle.yaml
-kubectl apply -f online-store/prometheus-config/prometheus
-kubectl expose pod prometheus-prometheus-0 --port 9090 --target-port 9090
-helm install stable/prometheus-adapter --name prometheus-adaptor -f ./online-store/prometheus-config/prometheus-adapter/values.yaml
-helm install stable/grafana --name grafana -f grafana/values.yaml
-```
-
-# Run Store App
-```
-helm install ../6-virtual-nodes/charts/online-store --name online-store -f ./myvalues.yaml
+kubectl create namespace vnodes
+cd 6-vnodes-mine
+kubectl apply -f ./prom-operator.yaml -n vnodes
+kubectl apply -f ./prometheus-config/prometheus -n vnodes
+kubectl expose pod prometheus-prometheus-0 --port 9090 --target-port 9090 -n vnodes
+helm install stable/prometheus-adapter --name prometheus-adaptor --namespace vnodes -f ./prometheus-config/prometheus-adapter/values.yaml
 ```
 
-# Access Grafana
+# Grafana
+Reuse the Grafana instance deployed in **[3-monitoring](../3-monitoring)**
+
+- Add second Prometheus data source and point it at `http://prometheus-prometheus-0.vnodes.svc.cluster.local:9090` name the data source **Prometheus-VNode**
+- Import the dashboard `grafana-dash-rps.json`
+
+# Run store app
+Change `store-values.yaml` especially the `ingress.host` value to match your setup 
 ```
-kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-echo -e "\n"
-export POD_NAME=$(kubectl get pods --namespace default -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}")
-kubectl --namespace default port-forward $POD_NAME 3000
+helm install ../6-virtual-nodes/charts/online-store --name online-store --namespace vnodes -f ./store-values.yaml
+```
+
+# Hit with requests
+Change host as required
+```
+hey -z 30m -c 3 http://store.k.benco.io/
 ```

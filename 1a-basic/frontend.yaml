@@ -35,7 +35,7 @@ spec:
         env:       
         - name: API_ENDPOINT
           # !!! CHANGE THIS !!! Use the DNS name of your static IP
-          value: http://smilrstatic.westeurope.cloudapp.azure.com/api
+          value: http://smilr.westeurope.cloudapp.azure.com/api
 
         resources:
           limits:

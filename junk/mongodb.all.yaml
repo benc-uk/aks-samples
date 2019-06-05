@@ -28,7 +28,7 @@ spec:
       containers:
       - name: {{ $name }}
 
-        image: mongo:3.4-jessie
+        image: mongo:4-xenial
 
         ports:
         - containerPort: 27017
