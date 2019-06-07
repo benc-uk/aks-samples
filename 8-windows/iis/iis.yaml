@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: iis
+  labels:
+    app: iis
+    scenario: "8"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iis
+  template:
+    metadata:
+      labels:
+        app: iis
+        scenario: "8"
+    spec:
+      # Taint added to my Windows nodes, you might need to change this
+      tolerations:
+        - key: "windows"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"    
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/os
+                operator: In
+                values:
+                - windows    
+      containers:
+      - name: iis-pods
+        image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 20
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "2G"
+
+---
+
+#
+# Endpoint for the front end microservice which serves the client app
+#
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: iis-svc
+  labels:
+    app: frontend
+    scenario: "8"
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: iis

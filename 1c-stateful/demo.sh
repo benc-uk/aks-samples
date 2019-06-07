@@ -11,7 +11,7 @@ ingressType=$1
 # Including DemoMagic
 source ../common/demo-magic.sh
 # Defining Type Speed
-TYPE_SPEED=2000
+TYPE_SPEED=20
 # Defining Custom prompt
 DEMO_PROMPT="${green2}\u${WHITE}:${blue2}\w${yellow}$ "
 

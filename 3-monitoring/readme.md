@@ -14,14 +14,14 @@ Concepts covered:
 # Install Prometheus
 
 ```
-helm install --name prometheus stable/prometheus --namespace monitoring --set server.persistentVolume.size=1Gi,alertmanager.persistentVolume.size=1Gi
+helm install --name prometheus stable/prometheus --namespace monitoring -f prometheus-values.yaml
 ```
 
 # Install Grafana
 
 Install Grafana using Helm
 ```
-helm install --name grafana stable/grafana --namespace monitoring --set persistence.enabled=true,image.tag=6.2.0,persistence.size=1Gi
+helm install --name grafana stable/grafana --namespace monitoring -f grafana-values.yaml
 ```
 
 Once deployed get the default password for the `admin` user account

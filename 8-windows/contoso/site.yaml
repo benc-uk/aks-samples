@@ -1,0 +1,68 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: contoso
+  labels:
+    app: contoso
+    scenario: "8"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contoso
+  template:
+    metadata:
+      labels:
+        app: contoso
+        scenario: "8"
+    spec:
+      # Taint added to my Windows nodes, you might need to change this
+      tolerations:
+        - key: "windows"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"    
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/os
+                operator: In
+                values:
+                - windows    
+      containers:
+      - name: contoso-pods
+
+        image: bcdemo.azurecr.io/contososports:latest
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 80
+
+        # resources:
+        #   limits:
+        #     cpu: "1"
+        #     memory: "4G"
+
+---
+
+#
+# Endpoint for the front end microservice which serves the client app
+#
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: contoso-svc
+  labels:
+    app: contoso
+    scenario: "8"
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: contoso

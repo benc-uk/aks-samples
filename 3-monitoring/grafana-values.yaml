@@ -1,0 +1,6 @@
+persistence:
+  enabled: true
+  size: 1Gi
+
+image:
+  tag: 6.2.0

@@ -1,0 +1,94 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: mssql
+  labels:
+    app: mssql
+    scenario: "8"
+spec:
+  serviceName: "mssql"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql  
+  template:
+    metadata:
+      labels:
+        app: mssql
+    spec:
+      terminationGracePeriodSeconds: 25
+      containers:
+      - name: mssql-pod
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        
+        ports:
+        - containerPort: 1433
+
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_SA_PASSWORD
+          value: "Password123!"
+        - name: MSSQL_IP_ADDRESS
+          value: "0.0.0.0"
+
+        volumeMounts:
+        - name: mssqldb
+          mountPath: /var/opt/mssql
+
+        resources:
+          limits:
+            memory: "1G"
+            cpu: "0.5"
+
+      volumes:
+      - name: mssqldb
+        persistentVolumeClaim:
+          claimName: mssql-data            
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-data
+  annotations:
+    volume.beta.kubernetes.io/storage-class: default
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver
+spec:
+  selector:
+    app: mssql
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+  type: ClusterIP
+
+---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: sqlserver-external
+#   labels:
+#     app: mssql
+#     scenario: "8"
+# spec:
+#   selector:
+#     app: mssql
+#   ports:
+#     - protocol: TCP
+#       port: 1433
+#       targetPort: 1433
+#   type: LoadBalancer  

@@ -15,11 +15,24 @@ Reuse the Grafana instance deployed in **[3-monitoring](../3-monitoring)**
 - Add second Prometheus data source and point it at `http://prometheus-prometheus-0.vnodes.svc.cluster.local:9090` name the data source **Prometheus-VNode**
 - Import the dashboard `grafana-dash-rps.json`
 
+Access with
+```
+export GRAFANA_POD_NAME=$(kubectl get pods --namespace monitoring -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}")
+kubectl --namespace monitoring port-forward $GRAFANA_POD_NAME 3000:3000
+```
+
 # Run store app
 Change `store-values.yaml` especially the `ingress.host` value to match your setup 
 ```
 helm install ../6-virtual-nodes/charts/online-store --name online-store --namespace vnodes -f ./store-values.yaml
 ```
+
+Watch what is going on:
+```
+kubectl get hpa -n vnodes -w
+kubectl get po -l app=online-store -n vnodes -w
+```
+
 
 # Hit with requests
 Change host as required
