@@ -6,6 +6,7 @@ if [ $# -eq 0 ]
     exit
 fi
 
+clear
 ingressType=$1
 
 # Including DemoMagic

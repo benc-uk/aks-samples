@@ -44,6 +44,11 @@ B. Manually run commands
 
 2. Access the DNS name you put into the `host:` of **ingress-http.yaml** in the browser, or run `./get-url.sh http`
 
+3. Autoscale
+
+```
+kubectl autoscale deployment data-api --cpu-percent=30 --min=1 --max=20
+```
 
 # Clean Up
 ```
