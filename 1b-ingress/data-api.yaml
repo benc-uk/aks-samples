@@ -47,11 +47,11 @@ spec:
 
         resources:
           limits:
-            memory: "2G"
-            cpu: "0.25"
+            memory: "128M"
+            cpu: "0.1"
           requests:
-            memory: "2G"
-            cpu: "0.25"
+            memory: "128M"
+            cpu: "0.1"
         
       nodeSelector:
         agentpool: nodepool1

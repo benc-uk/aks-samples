@@ -21,19 +21,16 @@ pe "kubectl apply -f ingress-$ingressType.yaml"
 
 # Deploy frontend
 pe "kubectl apply -f frontend.yaml"
-pe "kubectl get pods -o wide"
-pe "kubectl describe deploy frontend"
-
-# Data API
-pe "kubectl apply -f data-api.yaml"
-pe "kubectl get pods -o wide"
 
 # Mongo
 pe "kubectl apply -f mongodb.yaml"
-#pe "kubectl get pvc"
-pe "kubectl describe pod mongodb-0"
+pe "kubectl get pvc"
 
-#pe "../common/get-url.sh $1"
+# Data API
+pe "kubectl apply -f data-api.yaml"
+pe "kubectl get all -l scenario=1c"
+
+pe "../common/get-url.sh $1"
 
 # Show Logs
 pe "kubectl logs deploy/data-api -f"

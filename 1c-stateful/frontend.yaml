@@ -25,7 +25,6 @@ spec:
       containers:
       - name: frontend-pods
 
-        # !CHANGE THIS! To your real image reference for the frontend 
         image: smilr/frontend:stable
         imagePullPolicy: Always
 
@@ -34,7 +33,9 @@ spec:
 
         env:       
         - name: API_ENDPOINT
-          value: /api 
+          value: /api
+        - name: AAD_CLIENT_ID
+          value: 41fc0889-b9bc-426a-a867-988c471afc91
 
         livenessProbe:
           httpGet:
