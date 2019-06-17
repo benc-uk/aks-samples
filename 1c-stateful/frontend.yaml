@@ -25,7 +25,7 @@ spec:
       containers:
       - name: frontend-pods
 
-        image: smilr/frontend:stable
+        image: bcdemo.azurecr.io/smilr/frontend:dark
         imagePullPolicy: Always
 
         ports:
