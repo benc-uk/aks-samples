@@ -50,6 +50,7 @@ spec:
           requests:
             memory: "64M"
             cpu: "0.1"
+            
 ---
 
 #

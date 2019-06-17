@@ -9,14 +9,14 @@ kind: Ingress
 metadata:
   name: smilr-ingress
   labels:
-    scenario: 1c
+    scenario: 1b
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  # Change FQDN host as required to match your config
-  - host: smilr.k.benco.io   # smilr.f0dfafed36164c7faac0.westeurope.aksapp.io
+    # Change FQDN host as required to match your config
+  - host: smilr.changeme.westeurope.aksapp.io
     http:
       paths:
       - path: /api

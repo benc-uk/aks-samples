@@ -9,7 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: contoso.k.benco.io
+  # Change FQDN host as required to match your config
+  - host: changeme.changeme.net
     http:
       paths:
       - path: /

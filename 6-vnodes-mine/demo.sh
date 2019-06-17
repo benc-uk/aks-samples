@@ -15,6 +15,7 @@ pe "helm ls"
 
 pe "kubectl get po -n vnodes -l app=online-store"
 
-echo -e "\nAccess the store at: http://store.k.benco.io/\n"
+host=$(grep -oP 'host: \K.*' store-values.yaml)
+echo -e "\nAccess the store at: http://$host/\n"
 
 pe "kubectl get hpa -n vnodes"

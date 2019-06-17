@@ -16,7 +16,7 @@ metadata:
 spec:
   rules:
     # Change FQDN host as required to match your config
-  - host: smilr.k.benco.io   # smilr.f0dfafed36164c7faac0.westeurope.aksapp.io
+  - host: changeme.changeme.net
     http:
       paths:
       - path: /api

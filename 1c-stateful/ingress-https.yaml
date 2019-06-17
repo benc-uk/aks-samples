@@ -10,29 +10,26 @@ kind: Ingress
 metadata:
   name: smilr-ingress
   labels:
-    scenario: 1c
+    scenario: 1b
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod  # letsencrypt-staging
-    
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
 spec:
-
   tls:
   - hosts:
-    - smilr.k.benco.io
-    secretName: smilr-cert-prod
-
+    # Change FQDN host as required to match your config
+    - smilr.changeme.westeurope.aksapp.io
+    secretName: smilr-cert-staging
   rules:
-  - host: smilr.k.benco.io
+  # Change FQDN host as required to match your config
+  - host: smilr.changeme.westeurope.aksapp.io
     http:
       paths:
-
       - path: /api
         backend:
           serviceName: data-api-svc
           servicePort: 80
-
       - path: /
         backend:
           serviceName: frontend-svc

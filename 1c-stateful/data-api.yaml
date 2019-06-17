@@ -25,7 +25,8 @@ spec:
       containers:
       - name: data-api-pods
 
-        image: bcdemo.azurecr.io/smilr/data-api:stable
+        # !CHANGE THIS! To your real image reference for the data-api  
+        image: smilr/data-api:stable
         imagePullPolicy: Always
 
         ports:

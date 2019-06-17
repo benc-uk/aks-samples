@@ -7,6 +7,11 @@ No source code changes have been made, only a `Dockerfile` has been added to run
 This was done in Azure Pipelines, see `build-pipeline.yml`
 
 # Deploy
+Set up DNS record for the app
+```
+../common/create-dns.sh contoso
+```
+
 Change hostname in `ingress.yaml`
 ```
 cd 8-windows/contoso
@@ -18,7 +23,6 @@ The will try to connect to a MSSQL Server instance by DNS name `sqlserver` and u
 
 The `mssql.yaml` will deploy the MSSQL Server as a pod and create a service called `sqlserver` the only manual step is the creation of the database which can be done as follows
 
-NOTE. No
 ```
 export SQLPOD=$(kubectl get po -l app=mssql -o jsonpath='{.items[0].metadata.name}')
 kubectl exec -it $SQLPOD -- /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Password123! -Q "create database sportsdb"
