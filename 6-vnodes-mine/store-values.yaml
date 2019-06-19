@@ -34,7 +34,7 @@ app:
     enabled: true
     # Used to create an Ingress record.
     # When use IP access, comment hosts node
-    host: store.f0dfafed36164c7faac0.westeurope.aksapp.io
+    host: changeme.changeme.net
     annotations:
       kubernetes.io/ingress.class: addon-http-application-routing
   resources:
