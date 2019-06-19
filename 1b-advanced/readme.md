@@ -61,6 +61,9 @@ B. Manually run commands
 ../common/remove.sh
 ```
 
+# Advanced: Persistence for MongoDB
+Use `mongodb-persist.yaml` instead of `mongodb.yaml` to deploy MongoDB with a StatefulSet and persistent volume to hold its data. You can pass the string "persist" as a 2nd parameter to the `demo.sh` or `quick.sh` scripts to deploy in this mode
+
 
 # Advanced: Manual DNS and Ingress
 If not using the *'HTTP application routing add-on'* and have your own DNS domain/zone plus have manually installed an ingress controller (e.g. NGINX), the steps are broadly the same.
