@@ -18,12 +18,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    # Change FQDN host as required to match your config
-    - changeme.changeme.net
+      # !!! Change host as required to match your DNS configuration
+    - smilr.{{CHANGEME}.{{CHANGEME}}.aksapp.io
     secretName: smilr-cert-staging
   rules:
-  # Change FQDN host as required to match your config
-  - host: changeme.changeme.net
+    # !!! Change host as required to match your DNS configuration
+  - host: smilr.{{CHANGEME}.{{CHANGEME}}.aksapp.io
     http:
       paths:
       - path: /api

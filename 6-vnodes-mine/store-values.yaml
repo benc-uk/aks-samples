@@ -33,8 +33,8 @@ app:
   ingress:
     enabled: true
     # Used to create an Ingress record.
-    # When use IP access, comment hosts node
-    host: changeme.changeme.net
+    # !!! Change host as required to match your DNS configuration
+    host: store.{{CHANGEME}.{{CHANGEME}}.aksapp.io
     annotations:
       kubernetes.io/ingress.class: addon-http-application-routing
   resources:

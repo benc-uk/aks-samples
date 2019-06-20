@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nodeapp
+    scenario: "4"
+  name: nodeapp
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nodeapp
+        scenario: "4"
+    spec:
+      containers:
+      - image: bencuk/nodejs-demoapp
+        name: nodejs-demoapp
+        ports: 
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "128M"
+            cpu: "2"
+          requests:
+            memory: "128M"
+            cpu: "0.1"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nodeapp
+    scenario: "4"
+  name: nodeapp
+
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: nodeapp
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: iis-ingress
+  labels:
+    scenario: "4"
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    
+spec:
+  rules:
+  # !!! Change host as required to match your DNS configuration
+  - host: nodeapp.{{CHANGEME}.{{CHANGEME}}.aksapp.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nodeapp
+          servicePort: 80

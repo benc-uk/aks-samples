@@ -28,13 +28,13 @@ The *'HTTP application routing add-on'* will dynamically add and remove public D
 Therefor it is strongly advised to setup the DNS record for the name you are going to use ahead of time
 
 1. Copy `vars.sample.sh` to `vars.sh` and edit the values to match your AKS cluster
-2. Run `create-dns.sh` passing it a suitable DNS name prefix for your app, e.g. `smilr` or `demo`.
+2. Run `create-dns.sh` passing it a suitable DNS name prefix for your app, e.g. `smilr`
     ```
     ../common/create-dns.sh smilr
     ```
     This script detects the routing add-on DNS zone for your cluster, as well as the external IP of your ingress. It creates an A record in the DNS zone pointing to your ingress IP
 
-3. Edit **ingress-http.yaml** and change `host` to match the name returned by the script. The `create-dns.sh` script will output the host value you should use, it will look something like `blah.f0dfafed36164c7faac0.westeurope.aksapp.io` but the random string and region will differ.
+3. Edit **ingress-http.yaml** and change `host` to match the name returned by the script. The `create-dns.sh` script will output the host value you should use, it will look something like `smilr.f0dfafed36164c7faac0.westeurope.aksapp.io` but the random string and region will differ.
 
 
 # Running The Scenario

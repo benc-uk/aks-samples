@@ -87,12 +87,12 @@ echo -e "### "
 # Post creation things
 #
 
-# echo -e "\n### Enabling Virtual Nodes..."
-# az aks enable-addons \
-#   --resource-group $resGrp \
-#   --name $clusterName \
-#   --addons virtual-node \
-#   --subnet-name $vnodesSubnetName
+echo -e "\n### Enabling Virtual Nodes..."
+az aks enable-addons \
+  --resource-group $resGrp \
+  --name $clusterName \
+  --addons virtual-node \
+  --subnet-name $vnodesSubnetName
 
 echo -e "\n### Adding Windows node pool, this will take some time..."
 az aks nodepool add \

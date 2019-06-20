@@ -15,8 +15,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    # Change FQDN host as required to match your config
-  - host: changeme.changeme.net
+    # !!! Change host as required to match your DNS configuration
+  - host: smilr.{{CHANGEME}.{{CHANGEME}}.aksapp.io
     http:
       paths:
       - path: /api

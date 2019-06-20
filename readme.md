@@ -26,8 +26,8 @@ See [0. Deploy AKS Cluster](./0-cluster-deploy/)
 - [2. Using Helm](./2-helm)
 - [3. Monitoring (Prometheus)](./3-monitoring)
 - [4. Pod Autoscaler (HPA)]
-- [5. Cluster Autoscaler (CA)]
-- [6. Virtual Nodes *](https://github.com/Azure-Samples/virtual-node-autoscale/)
+- [5. Cluster Autoscaler (CA)]  
+- [6. Virtual Nodes *](./6-vnodes-mine)
 - [7. Machine Learning and KubeFlow *](https://github.com/Azure/kubeflow-labs)
-
+- [8. Windows Workloads](./8-windows)
 
