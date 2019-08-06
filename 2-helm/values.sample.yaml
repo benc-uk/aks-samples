@@ -3,7 +3,7 @@
 #
 
 # Change to blank string to pull from prebuilt images on Docker Hub
-registryPrefix: 
+registryPrefix: changeme.azurecr.io/
 
 # Leave blank if not using DNS with your ingress
 # Get the name of your AKS DNS zone by running `az network dns zone list -o table`
@@ -25,6 +25,12 @@ frontend:
   replicas: 1
   imagePullPolicy: Always
 
+# sentiment:
+#   enabled: false
+#   key: changeme
+#   region: changeme
+
+# These are the defaults anyhow, change if you wish
 mongodb:
   persistence:
     enabled: false

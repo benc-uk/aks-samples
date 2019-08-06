@@ -11,7 +11,7 @@ Concepts covered:
 # Prerequsites / Behind the scenes
 - [Install Helm into AKS](https://docs.microsoft.com/en-us/azure/aks/kubernetes-helm)
 - `helm dependency update smilr`
-- Copy `values.sample.yaml` to `values.yaml` and modify as needed
+- Copy `values.sample.yaml` to `myvalues.yaml` and modify as needed
 
 # Running The Scenario
 A. Use the the end to end magic demo script, this creates a Helm release called 'demo'
@@ -23,7 +23,7 @@ B. Manually run commands
 
 1. Deploy everything
     ```
-    helm upgrade -i <<release-name>> smilr -f values.yaml
+    helm upgrade -i <<release-name>> smilr -f myvalues.yaml
     ```
 
 # Clean Up
