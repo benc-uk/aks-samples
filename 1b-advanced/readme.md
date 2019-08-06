@@ -76,7 +76,7 @@ To use HTTPS, TLS certs need to be issued and used. Let's Encrypt can provide fr
 2. Change the email address in the **extra/issuer.yaml** file, you can use any valid email address
 3. Install the cert issuer. Note. We use the staging Let's Encrypt endpoint as the production endpoint has ***extremely*** strict rate limits and the aksapp.io domain is often blocked
     ```
-    kubectl apply -f issuer.yaml
+    kubectl apply -f extra/issuer.yaml
     ```
 4. The certificate might take a little while to validate and be issued the first time
 5. Run the scenarios but pass `https` to the `demo.sh` script (e.g. `./demo.sh https`) or apply  `ingress-https.yaml` if deploying manually with kubectl
