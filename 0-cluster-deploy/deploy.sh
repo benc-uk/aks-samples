@@ -75,8 +75,9 @@ az aks create \
  --workspace-resource-id $workspaceId \
  --service-principal $spClientId \
  --client-secret $spPassword \
- --windows-admin-username $winAdminUser \
- --windows-admin-password $winAdminPwd \
+ --network-policy azure \
+#  --windows-admin-username $winAdminUser \
+#  --windows-admin-password $winAdminPwd \
  --verbose
 
 echo -e "\n### "
@@ -87,19 +88,19 @@ echo -e "### "
 # Post creation things
 #
 
-echo -e "\n### Enabling Virtual Nodes..."
-az aks enable-addons \
-  --resource-group $resGrp \
-  --name $clusterName \
-  --addons virtual-node \
-  --subnet-name $vnodesSubnetName
+# echo -e "\n### Enabling Virtual Nodes..."
+# az aks enable-addons \
+#   --resource-group $resGrp \
+#   --name $clusterName \
+#   --addons virtual-node \
+#   --subnet-name $vnodesSubnetName
 
-echo -e "\n### Adding Windows node pool, this will take some time..."
-az aks nodepool add \
-  --resource-group $resGrp \
-  --cluster-name $clusterName \
-  --os-type Windows \
-  --name win1 \
-  --node-count 1 \
-  --node-vm-size $vmSize \
-  --kubernetes-version $kubeVersion \
+# echo -e "\n### Adding Windows node pool, this will take some time..."
+# az aks nodepool add \
+#   --resource-group $resGrp \
+#   --cluster-name $clusterName \
+#   --os-type Windows \
+#   --name win1 \
+#   --node-count 1 \
+#   --node-vm-size $vmSize \
+#   --kubernetes-version $kubeVersion \

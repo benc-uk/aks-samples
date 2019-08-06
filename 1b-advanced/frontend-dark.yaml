@@ -1,0 +1,50 @@
+#
+# For showing blue/green deployments 
+#
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frontend-dark
+  labels:
+    app: frontend-dark
+    scenario: 1b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-dark
+  template:
+    metadata:
+      labels:
+        app: frontend-dark
+        scenario: 1b
+    spec:
+      containers:
+      - name: frontend-pods
+
+        # !CHANGE THIS! To your real image reference for the frontend 
+        image: smilr/frontend:dark
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 3000
+
+        env:       
+        - name: API_ENDPOINT
+          value: /api 
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 20
+
+        resources:
+          limits:
+            memory: "64M"
+            cpu: "0.1"
+          requests:
+            memory: "64M"
+            cpu: "0.1"
