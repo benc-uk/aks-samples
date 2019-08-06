@@ -35,8 +35,10 @@ spec:
         env:     
         - name: MONGO_CONNSTR
           value: mongodb://mongodb-svc
-        - name: MONGO_RETRY_DELAY
-          value: "10"
+
+        # Optional - uncomment if deploying sentiment.yaml, see notes in there
+        # - name: SENTIMENT_API_ENDPOINT
+        #   value: http://sentiment-svc:5000
 
         livenessProbe:
           httpGet:
