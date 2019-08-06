@@ -6,6 +6,7 @@ Concepts covered:
 - Ingress
 - External DNS
 - Liveness Probes
+- Persistent Volumes 
 
 Optional:
 - TLS certs for HTTPS (via Let's Encrypt)
@@ -61,10 +62,6 @@ B. Manually run commands
 ../common/remove.sh
 ```
 
-# Advanced: Persistence for MongoDB
-Use `mongodb-persist.yaml` instead of `mongodb.yaml` to deploy MongoDB with a StatefulSet and persistent volume to hold its data. You can pass the string "persist" as a 2nd parameter to the `demo.sh` or `quick.sh` scripts to deploy in this mode
-
-
 # Advanced: Manual DNS and Ingress
 If not using the *'HTTP application routing add-on'* and have your own DNS domain/zone plus have manually installed an ingress controller (e.g. NGINX), the steps are broadly the same.
 - Create an A record pointing to the public IP of your ingress controller's service (exercise left to reader).  
@@ -76,11 +73,11 @@ If not using the *'HTTP application routing add-on'* and have your own DNS domai
 To use HTTPS, TLS certs need to be issued and used. Let's Encrypt can provide free certs and [cert-manager](https://github.com/jetstack/cert-manager) is a standard way to integrate Let's Encrypt with Kubernetes and automatically issue certs
 
 1. Install cert-manager. [Follow these steps](https://docs.cert-manager.io/en/latest/getting-started/install.html)
-2. Change the email address in the **issuer.yaml** file, you can use any valid email address
+2. Change the email address in the **extra/issuer.yaml** file, you can use any valid email address
 3. Install the cert issuer. Note. We use the staging Let's Encrypt endpoint as the production endpoint has ***extremely*** strict rate limits and the aksapp.io domain is often blocked
     ```
     kubectl apply -f issuer.yaml
     ```
-5. The certificate might take a little while to validate and be issued the first time
-6. Run the scenarios but pass `https` to the `demo.sh` script (e.g. `./demo.sh https`) or apply  `ingress-https.yaml` if deploying manually with kubectl
-7. Note. You might get a warning about the cert in the browser as it's issued by the staging service, you may have to ignore the error (e.g. click on 'advanced' or 'proceed to site'). One option to avoid the error is to install the 'Fake LE Intermediate X1' cert in your trusted root certs but this is not recommended 
+4. The certificate might take a little while to validate and be issued the first time
+5. Run the scenarios but pass `https` to the `demo.sh` script (e.g. `./demo.sh https`) or apply  `ingress-https.yaml` if deploying manually with kubectl
+6. Note. You might get a warning about the cert in the browser as it's issued by the staging service, you may have to ignore the error (e.g. click on 'advanced' or 'proceed to site'). One option to avoid the error is to install the 'Fake LE Intermediate X1' cert in your trusted root certs but this is not recommended 

@@ -23,5 +23,5 @@ kubectl get all -l scenario=1b
 
 ../common/get-url.sh $1
 
-echo "Show Logs"
-kubectl logs deploy/data-api -f
+#echo "Show Logs"
+#kubectl logs deploy/data-api -f

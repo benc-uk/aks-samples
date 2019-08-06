@@ -17,7 +17,6 @@ DEMO_PROMPT="${green2}\u${WHITE}:${blue2}\w${yellow}$ "
 
 # Deploy ingress
 pe "kubectl apply -f ingress-$ingressType.yaml"
-#pe "kubectl describe ingress/smilr-ingress"
 
 # Deploy frontend
 pe "kubectl apply -f frontend.yaml"

@@ -36,9 +36,8 @@ spec:
         - name: MONGO_CONNSTR
           value: mongodb://mongodb-svc
 
-        # Optional - uncomment if deploying sentiment.yaml, see notes in there
-        # - name: SENTIMENT_API_ENDPOINT
-        #   value: http://sentiment-svc:5000
+        - name: SENTIMENT_API_ENDPOINT
+          value: http://sentiment-svc:5000
 
         livenessProbe:
           httpGet:
@@ -54,20 +53,6 @@ spec:
           requests:
             memory: "128M"
             cpu: "0.1"
-        
-      nodeSelector:
-        agentpool: nodepool1
-            
-      # Wipe & initialize the database with demo data, remove if unwanted
-      # initContainers:
-      #  - name: init-demodata
-      #    image: smilr/data-api
-      #    command: ['sh', '-c', 'cd demoData && node demoData.js']
-      #    env:
-      #      - name: MONGO_CONNSTR
-      #        value: mongodb://mongodb-svc.default
-      #      - name: WIPE_DB
-      #        value: "1"
 
 ---
 
