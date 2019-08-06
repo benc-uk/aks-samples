@@ -1,3 +1,6 @@
 [submodule "7-machine-learning"]
 	path = 7-machine-learning
 	url = https://github.com/Azure/kubeflow-labs.git
+[submodule "6-virtual-nodes"]
+	path = 6-virtual-nodes
+	url = https://github.com/Azure-Samples/virtual-node-autoscale
