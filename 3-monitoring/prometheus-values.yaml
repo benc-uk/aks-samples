@@ -3,5 +3,8 @@ server:
     enabled: false
 pushgateway:
   enabled: false
+nodeExporter:
+  nodeSelector: 
+    beta.kubernetes.io/os: linux
 alertmanager:
   enabled: false

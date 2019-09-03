@@ -65,7 +65,6 @@ az aks create \
  --kubernetes-version $kubeVersion \
  --node-vm-size $vmSize \
  --node-count $minNodes \
- --enable-vmss \
  --enable-cluster-autoscaler \
  --min-count $minNodes \
  --max-count $maxNodes \
@@ -76,10 +75,11 @@ az aks create \
  --service-principal $spClientId \
  --client-secret $spPassword \
  --network-policy azure \
+ --load-balancer-sku standard \
+ --vm-set-type VirtualMachineScaleSets \
+ --verbose
 #  --windows-admin-username $winAdminUser \
 #  --windows-admin-password $winAdminPwd \
- --verbose
-
 echo -e "\n### "
 echo -e "### AKS cluster is now ready, running post deploy steps..."
 echo -e "### "
