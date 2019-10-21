@@ -19,4 +19,4 @@ subnetName="aks-subnet"
 vnodesSubnetName="vnodes-subnet"
 
 winAdminUser="winadmin"
-winAdminPwd="Ch@ngeMe!2^secret"
+winAdminPwd="P@ssw0rd1234"
