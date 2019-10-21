@@ -7,11 +7,11 @@ resGrp=""
 location=""
 clusterName=""
 logWorkspaceName="" # MUST BE UNIQUE!
-kubeVersion="1.13.5"
+kubeVersion="1.14.7"
 
 # Maybe change these
 vmSize="Standard_D2s_v3"
-minNodes="1"
+minNodes="2"
 maxNodes="5"
 
 vnetName="aks-vnet"
@@ -19,4 +19,4 @@ subnetName="aks-subnet"
 vnodesSubnetName="vnodes-subnet"
 
 winAdminUser="winadmin"
-winAdminPwd="HUw!yKfDd-B^6j@D"
+winAdminPwd="Ch@ngeMe!2^secret"

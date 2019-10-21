@@ -5,6 +5,7 @@ This bash script `deploy.sh`, stands-up AKS with the features enabled required f
 - VMSS
 - Windows Nodes
 - Virtual Nodes
+- Network Policy
 - Container Insights monitoring
 - VNet integration (advanced networking, or "Azure CNI")
 - RBAC
@@ -16,11 +17,11 @@ You can also use the Azure Portal, I won't judge you.
 The script isn't intended cover every eventuality and assumes you have things like SSH keys in the default locations. The script deploys a new VNet and Log Analytics Workspace for the cluster to use, if you want to use existing resources for these, you will need to edit the script, an exercise left to the reader.
 
 ## Configuring
-You must copy the provided `vars.sample.sh` file to `vars.sh` and edit the settings values in there before running
+You must copy the provided `vars.sample.sh` file to `vars.sh` and edit the settings values in there before running:
 
 ## Preview Features
 
-***May 2019:*** Several features used by this script and cluster are in preview, so some steps need to be taken prior to running
+***Oct 2019:*** Some features used by this script and cluster are in preview, so prior to running
 
 - An Azure CLI extension is required, make sure you are running at least v0.4.0 of the `aks-preview` extension
     ```
@@ -30,8 +31,6 @@ You must copy the provided `vars.sample.sh` file to `vars.sh` and edit the setti
 - Enable preview features
 
     ```
-    az feature register --name MultiAgentpoolPreview --namespace Microsoft.ContainerService
-    az feature register --name VMSSPreview --namespace Microsoft.ContainerService
     az feature register --name WindowsPreview --namespace Microsoft.ContainerService
     ```
 
@@ -40,7 +39,7 @@ You must copy the provided `vars.sample.sh` file to `vars.sh` and edit the setti
     az feature list -o table --query "[?contains(name, 'Microsoft.ContainerService')].{Name:name,State:properties.state}"
     ```
 
-    It can sometimes take over 20 minutes for the features to register. Once registered, it is important that you re-register the **Microsoft.ContainerService** provider
+    It can sometimes take over 20 minutes for the features to register. Once registered, **it is important that you re-register the `Microsoft.ContainerService` provider**
     ```
     az provider register --namespace Microsoft.ContainerService
     ```

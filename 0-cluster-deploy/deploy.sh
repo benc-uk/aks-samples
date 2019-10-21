@@ -78,8 +78,8 @@ az aks create \
  --load-balancer-sku standard \
  --vm-set-type VirtualMachineScaleSets \
  --verbose
-#  --windows-admin-username $winAdminUser \
-#  --windows-admin-password $winAdminPwd \
+ --windows-admin-username $winAdminUser \
+ --windows-admin-password $winAdminPwd \
 echo -e "\n### "
 echo -e "### AKS cluster is now ready, running post deploy steps..."
 echo -e "### "
@@ -88,19 +88,19 @@ echo -e "### "
 # Post creation things
 #
 
-# echo -e "\n### Enabling Virtual Nodes..."
-# az aks enable-addons \
-#   --resource-group $resGrp \
-#   --name $clusterName \
-#   --addons virtual-node \
-#   --subnet-name $vnodesSubnetName
+echo -e "\n### Enabling Virtual Nodes..."
+az aks enable-addons \
+  --resource-group $resGrp \
+  --name $clusterName \
+  --addons virtual-node \
+  --subnet-name $vnodesSubnetName
 
-# echo -e "\n### Adding Windows node pool, this will take some time..."
-# az aks nodepool add \
-#   --resource-group $resGrp \
-#   --cluster-name $clusterName \
-#   --os-type Windows \
-#   --name win1 \
-#   --node-count 1 \
-#   --node-vm-size $vmSize \
-#   --kubernetes-version $kubeVersion \
+echo -e "\n### Adding Windows node pool, this will take some time..."
+az aks nodepool add \
+  --resource-group $resGrp \
+  --cluster-name $clusterName \
+  --os-type Windows \
+  --name win1 \
+  --node-count 1 \
+  --node-vm-size $vmSize \
+  --kubernetes-version $kubeVersion \
