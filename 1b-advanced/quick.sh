@@ -17,6 +17,9 @@ kubectl apply -f frontend.yaml
 echo "Deploy MongoDB"
 kubectl apply -f mongodb.yaml
 
+echo "Deploy Sentiment"
+kubectl apply -f extra/sentiment.yaml
+
 echo "Data API"
 kubectl apply -f data-api.yaml
 kubectl get all -l scenario=1b

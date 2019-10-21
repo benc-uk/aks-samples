@@ -14,11 +14,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
   tls:
   - hosts:
-      # !!! Change host as required to match your DNS configuration
+    # Change FQDN host as required to match your config
     - smilr.{{CHANGEME}.{{CHANGEME}}.aksapp.io
     secretName: smilr-cert-staging
   rules:
