@@ -79,13 +79,14 @@ az aks create \
  --vm-set-type VirtualMachineScaleSets \
  --verbose \
  --windows-admin-username $winAdminUser \
- --windows-admin-password $winAdminPwd \
+ --windows-admin-password $winAdminPwd 
+
 echo -e "\n### "
 echo -e "### ✨ AKS cluster is now ready, running post deploy steps..."
 echo -e "### "
 
 #
-# Post creation things
+# Post creation steps, comment out/in as required
 #
 
 echo -e "\n### 👻 Enabling Virtual Nodes..."
