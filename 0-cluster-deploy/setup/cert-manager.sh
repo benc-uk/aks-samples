@@ -12,6 +12,9 @@ kubectl create namespace cert-manager
 #
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v$CERT_MGR_VER/cert-manager.yaml --validate=false
 
+echo "Waiting 60 secs..."
+sleep 60
+
 #
 # Deploy issuers
 #
