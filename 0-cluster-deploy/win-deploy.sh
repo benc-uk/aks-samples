@@ -54,7 +54,7 @@ workspaceId=$(az resource show -n $logWorkspaceName -g $resGrp --resource-type M
 
 #
 # Build the cluster! With features/options: 
-# - Advanced network, autoscaler, VMSS, monitoring, RBAC, HTTP routing, network policy
+# - Advanced network, autoscaler, VMSS, monitoring, RBAC, HTTP routing
 #
 echo -e "\n### 🚀 Creating AKS cluster, please wait..."
 az aks create \
@@ -77,7 +77,9 @@ az aks create \
  --network-policy azure \
  --load-balancer-sku standard \
  --vm-set-type VirtualMachineScaleSets \
- --verbose 
+ --verbose \
+ --windows-admin-username $winAdminUser \
+ --windows-admin-password $winAdminPwd 
 
 echo -e "\n### "
 echo -e "### ✨ AKS cluster is now ready, running post deploy steps..."
@@ -87,9 +89,19 @@ echo -e "### "
 # Post creation steps, comment out/in as required
 #
 
-echo -e "\n### 👻 Enabling Virtual Nodes..."
-az aks enable-addons \
+# echo -e "\n### 👻 Enabling Virtual Nodes..."
+# az aks enable-addons \
+#   --resource-group $resGrp \
+#   --name $clusterName \
+#   --addons virtual-node \
+#   --subnet-name $vnodesSubnetName
+
+echo -e "\n### Adding Windows node pool, this will take some time..."
+az aks nodepool add \
   --resource-group $resGrp \
-  --name $clusterName \
-  --addons virtual-node \
-  --subnet-name $vnodesSubnetName
+  --cluster-name $clusterName \
+  --os-type Windows \
+  --name win1 \
+  --node-count 1 \
+  --node-vm-size $vmSize \
+  --kubernetes-version $kubeVersion \
