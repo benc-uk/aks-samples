@@ -77,6 +77,8 @@ az aks create \
  --network-policy azure \
  --load-balancer-sku standard \
  --vm-set-type VirtualMachineScaleSets \
+ --windows-admin-username $winAdminUser \
+ --windows-admin-password $winAdminPwd \
  --verbose 
 
 echo -e "\n### "
@@ -87,9 +89,9 @@ echo -e "### "
 # Post creation steps, comment out/in as required
 #
 
-echo -e "\n### 👻 Enabling Virtual Nodes..."
-az aks enable-addons \
-  --resource-group $resGrp \
-  --name $clusterName \
-  --addons virtual-node \
-  --subnet-name $vnodesSubnetName
+# echo -e "\n### 👻 Enabling Virtual Nodes..."
+# az aks enable-addons \
+#   --resource-group $resGrp \
+#   --name $clusterName \
+#   --addons virtual-node \
+#   --subnet-name $vnodesSubnetName
