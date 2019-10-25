@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: {{change-me}}-cert-staging
   issuerRef:
-    name: letsencrypt-staging-dns
+    name: letsencrypt-staging
     kind: ClusterIssuer
   commonName: '*.{{change-me}}'
   dnsNames:

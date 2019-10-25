@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: {{change-me}}-cert
   issuerRef:
-    name: letsencrypt-prod-dns
+    name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: '*.{{change-me}}'
   dnsNames:
