@@ -1,3 +1,6 @@
+#
+# Simple Node.js demo web app
+#
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -27,6 +30,9 @@ spec:
 
 --- 
 
+#
+# Internal service listening on port 80
+#
 kind: Service
 apiVersion: v1
 metadata:
@@ -43,6 +49,10 @@ spec:
 
 ---
 
+#
+# Ingress for the demo web app, note the special auth annotations
+# Do not replace $host or $escaped_request_uri with anything
+#
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
@@ -63,6 +73,9 @@ spec:
 
 ---
 
+#
+# Ingress for the oauth2 proxy, note the /oauth2 path and TLS config
+#
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
