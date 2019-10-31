@@ -4,7 +4,6 @@ metadata:
   labels:
     k8s-app: oauth2-proxy
   name: oauth2-proxy
-  namespace: kube-system
 spec:
   replicas: 1
   selector:
@@ -16,27 +15,34 @@ spec:
         k8s-app: oauth2-proxy
     spec:
       containers:
-      - args:
-        - --provider=github
+      - name: oauth2-proxy
+        image: quay.io/pusher/oauth2_proxy:latest
+        imagePullPolicy: Always   
+        args:
+        - --provider=azure
         - --email-domain=*
         - --upstream=file:///dev/null
-        - --http-address=0.0.0.0:4180
-        # Register a new application
-        # https://github.com/settings/applications/new
+        - --http-address=0.0.0.0:4180        
         env:
+        - name: OAUTH2_PROVIDER
+          value: azure    
+        - name: OAUTH2_AZURE_TENANT
+          value: __CHANGEME__   
         - name: OAUTH2_PROXY_CLIENT_ID
-          value: 
+          value: __CHANGEME__
         - name: OAUTH2_PROXY_CLIENT_SECRET
-          value: 
-        # docker run -ti --rm python:3-alpine python -c 'import secrets,base64; print(base64.b64encode(base64.b64encode(secrets.token_bytes(16))));'
+          value: __CHANGEME__
         - name: OAUTH2_PROXY_COOKIE_SECRET
-          value: S1VkSEN3bUphV1d2Z0FxanVJSkRaUT09
-        image: quay.io/pusher/oauth2_proxy:latest
-        imagePullPolicy: Always
-        name: oauth2-proxy
+          value: __CHANGEME__
+        - name: OAUTH2_PROXY_EMAIL_DOMAINS
+          value: "*"
         ports:
         - containerPort: 4180
           protocol: TCP
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "0.2"             
 
 ---
 
@@ -46,7 +52,6 @@ metadata:
   labels:
     k8s-app: oauth2-proxy
   name: oauth2-proxy
-  namespace: kube-system
 spec:
   ports:
   - name: http

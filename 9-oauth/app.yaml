@@ -1,0 +1,84 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: demoapp
+  labels:
+    app: demoapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demoapp
+  template:
+    metadata:
+      labels:
+        app: demoapp
+    spec:
+      containers:
+      - name: demoapp-pods
+        image: bencuk/nodejs-demoapp
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.2"
+
+--- 
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoapp
+  labels:
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  selector:
+    app: demoapp
+
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: demoapp
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"    
+spec:
+  rules:
+  - host: demoapp.__CHANGEME__
+    http:
+      paths:
+      - path: /        
+        backend:
+          serviceName: demoapp
+          servicePort: 80
+
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: oauth2-proxy
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: demoapp.__CHANGEME__
+    http:
+      paths:
+      - path: /oauth2     
+        backend:
+          serviceName: oauth2-proxy
+          servicePort: 4180
+  tls:
+  - hosts:
+    - demoapp.__CHANGEME__
+    secretName: __CHANGEME__
