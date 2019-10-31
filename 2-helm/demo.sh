@@ -8,6 +8,6 @@ TYPE_SPEED=20
 DEMO_PROMPT="${green2}\u${WHITE}:${blue2}\w${yellow}$ "
 
 # Deploy with Helm
-pe "helm upgrade -i demo smilr -f values.yaml"
+pe "helm3 upgrade --install demo smilr -f myvalues.yaml"
 
-pe "helm ls"
+pe "helm3 ls"
