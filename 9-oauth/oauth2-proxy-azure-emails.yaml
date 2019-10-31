@@ -20,7 +20,6 @@ spec:
         imagePullPolicy: Always   
         args:
         - --provider=azure
-        - --email-domain=*
         - --upstream=file:///dev/null
         - --http-address=0.0.0.0:4180        
         env: 
@@ -32,16 +31,23 @@ spec:
           value: __CHANGEME__
         - name: OAUTH2_PROXY_COOKIE_SECRET
           value: __CHANGEME__
-        - name: OAUTH2_PROXY_EMAIL_DOMAINS
-          value: "*"
+        - name: OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE
+          value: /etc/oauth2-proxy/emails.txt          
         ports:
         - containerPort: 4180
           protocol: TCP
         resources:
           limits:
             memory: "300Mi"
-            cpu: "0.2"             
-
+            cpu: "0.2"     
+        volumeMounts:
+        - name: email-config-volume
+          mountPath: /etc/oauth2-proxy/emails.txt
+          subPath: emails.txt               
+      volumes:
+        - name: email-config-volume
+          configMap:
+            name: oauth-allowed-emails
 ---
 
 apiVersion: v1
