@@ -35,6 +35,9 @@ Configuring of DNS, the ingress controller and cert-manager is outside the scope
 - Run `kubectl apply -f app.yaml`
 - Access the site in your browser to be redirected to the relevant provider for login
 
+## Optional
+Use the `allowed-emails.yaml` and the `oauth2-proxy-azure-emails.yaml` for examples of limiting access via a list of email addresses
+
 ## Tips
 For the `OAUTH2_PROXY_COOKIE_SECRET` you can generate a random 16 byte string value, with the following command:
 ```bash
