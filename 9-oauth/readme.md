@@ -17,7 +17,8 @@ Configuring of DNS, the ingress controller and cert-manager is outside the scope
 ## Pre-Setup: GitHub
 - Register new OAuth app following these steps: https://pusher.github.io/oauth2_proxy/auth-configuration#github-auth-provider
 - Make a note of the client id and secret
-- Modify `oauth2-proxy-github.yaml` and set `OAUTH2_PROXY_CLIENT_ID` and `OAUTH2_PROXY_CLIENT_SECRET`. Place a random string in `OAUTH2_PROXY_COOKIE_SECRET`
+- Run `kubectl create secret generic oauth2-secrets --from-literal=clientSecret=__YOUR_CLIENT_SECRET__` with the value of your client secret
+- Modify `oauth2-proxy-github.yaml` and set `OAUTH2_PROXY_CLIENT_ID`. Place a random string in `OAUTH2_PROXY_COOKIE_SECRET`
 - Run `kubectl apply -f oauth2-proxy-github.yaml`
   
 ## Pre-Setup: Azure AD
@@ -25,7 +26,8 @@ Configuring of DNS, the ingress controller and cert-manager is outside the scope
   - Ensure the app is setup for web authentication
   - Ensure the redirect URL is correctly set e.g. `https://__YOUR_DOMAIN__/oauth2/callback`
 - Make a note of the client id and secret, also your tenant id.
-- Modify `oauth2-proxy-azure.yaml` and set `OAUTH2_PROXY_CLIENT_ID`, `OAUTH2_PROXY_CLIENT_SECRET` and also `OAUTH2_AZURE_TENANT`. Place a random string in `OAUTH2_PROXY_COOKIE_SECRET`
+- Run `kubectl create secret generic oauth2-secrets --from-literal=clientSecret=__YOUR_CLIENT_SECRET__` with the value of your client secret
+- Modify `oauth2-proxy-azure.yaml` and set `OAUTH2_PROXY_CLIENT_ID`, and also `OAUTH2_AZURE_TENANT`. Place a random string in `OAUTH2_PROXY_COOKIE_SECRET`
 - Run `kubectl apply -f oauth2-proxy-azure.yaml`
   
 ## Deploy & Test App

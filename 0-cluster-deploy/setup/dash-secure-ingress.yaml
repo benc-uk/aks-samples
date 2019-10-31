@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth-allowed-emails
+data:
+  emails.txt: |
+    __CHANGEME__@__CHANGEME__
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      containers:
+      - name: oauth2-proxy
+        image: quay.io/pusher/oauth2_proxy:latest
+        imagePullPolicy: Always   
+        args:
+        - --provider=azure
+        - --upstream=file:///dev/null
+        - --http-address=0.0.0.0:4180        
+        env: 
+        - name: OAUTH2_PROXY_AZURE_TENANT
+          value: __CHANGEME__
+        - name: OAUTH2_PROXY_CLIENT_ID
+          value: __CHANGEME__
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          value: __CHANGEME__
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: __CHANGEME__
+        - name: OAUTH2_PROXY_AUTHENTICATED_EMAILS_FILE
+          value: /etc/oauth2-proxy/emails.txt          
+        ports:
+        - containerPort: 4180
+          protocol: TCP
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "0.2"     
+        volumeMounts:
+        - name: email-config-volume
+          mountPath: /etc/oauth2-proxy/emails.txt
+          subPath: emails.txt               
+      volumes:
+        - name: email-config-volume
+          configMap:
+            name: oauth-allowed-emails 
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+spec:
+  ports:
+  - name: http
+    port: 4180
+    protocol: TCP
+    targetPort: 4180
+  selector:
+    k8s-app: oauth2-proxy
+
+---
+
+#
+# Ingress for the demo web app, note the special auth annotations
+# Do not replace $host or $escaped_request_uri with anything
+#
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: dashboard
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"    
+spec:
+  rules:
+  - host: dash.__CHANGEME__
+    http:
+      paths:
+      - path: /        
+        backend:
+          serviceName: kubernetes-dashboard
+          servicePort: 80
+
+---
+
+#
+# Ingress for the oauth2 proxy, note the /oauth2 path and TLS config
+#
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: dashboard-oauth2-proxy
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: dash.__CHANGEME__
+    http:
+      paths:
+      - path: /oauth2     
+        backend:
+          serviceName: oauth2-proxy
+          servicePort: 4180
+  tls:
+  - hosts:
+    - dash.__CHANGEME__
+    secretName: __CHANGEME__
