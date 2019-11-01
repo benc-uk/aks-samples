@@ -16,12 +16,6 @@ echo "Waiting 90 secs, before creating issuers..."
 sleep 90
 
 #
-# Deploy HTTP issuers
-#
-kubectl apply -f issuer-prod.yaml
-kubectl apply -f issuer-staging.yaml
-
-#
 # For DNS issuers ONLY
 # REMOVE if you're not using wildcard certs with a wildcard DNS zone
 #
