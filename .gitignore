@@ -3,3 +3,4 @@ virtual-nodes.sh
 myvalues.yaml
 requirements.lock
 charts/
+Chart.lock
