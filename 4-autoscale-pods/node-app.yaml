@@ -57,7 +57,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: iis-ingress
+  name: nodeapp-ingress
   labels:
     scenario: "4"
   annotations:
